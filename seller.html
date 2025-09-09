@@ -9,176 +9,153 @@
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <style>
-body { margin:0; font-family: Arial, sans-serif; background:#f7f7f7; color:#111; }
-header { background: #131921; padding:0.75rem 2rem; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:1000; }
-header img { height: 65px; }
-nav a { color:#fff; text-decoration:none; margin-left:1.5rem; font-weight:bold; transition:0.3s; }
-nav a:hover { color:#ff9900; }
-.g_id_signin { margin-left:1rem; }
-
-.container { max-width:1000px; margin:2rem auto; background:#fff; padding:2rem; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,0.1); }
-h2 { text-align:center; color:#ff9900; margin-bottom:1.5rem; }
-.message { text-align:center; font-size:1.2rem; color:#b12704; margin-bottom:1rem; }
-
-form label { display:block; margin-top:1rem; font-weight:bold; }
-form input { width:100%; padding:0.75rem; margin-top:0.5rem; border:1px solid #ccc; border-radius:5px; font-size:1rem; }
-form button { margin-top:1.5rem; background:#ff9900; color:white; border:none; padding:0.75rem 1.5rem; border-radius:5px; cursor:pointer; font-size:1rem; transition:transform 0.3s, background 0.3s; }
-form button:hover { transform:scale(1.05); background:#e68a00; }
-
-.product-list { display:flex; flex-wrap:wrap; gap:1rem; margin-top:1rem; }
-.product-card { border:1px solid #ccc; border-radius:5px; padding:0.5rem; width:200px; text-align:center; background:#fff; }
-.product-card img { width:100%; height:150px; object-fit:cover; border-radius:5px; }
-.signout-btn { background:#d9534f; color:white; border:none; padding:0.5rem 1rem; border-radius:5px; cursor:pointer; float:right; margin-top:-50px; }
-.signout-btn:hover { background:#c9302c; }
+body {margin:0; font-family:Arial,sans-serif; background:#111; color:#fff;}
+header {background: rgba(0,0,0,0.85); padding:0.75rem 2rem; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:1000;}
+header img {height:70px;}
+nav a {color:#fff; text-decoration:none; margin-left:1.5rem; font-weight:bold; transition:0.3s;}
+nav a:hover {color:#ff4d4d;}
+.container{max-width:900px; margin:2rem auto; padding:2rem; background:#222; border-radius:10px;}
+h2{text-align:center; color:#ff4d4d; margin-bottom:1.5rem;}
+form label{display:block; margin-bottom:0.5rem;}
+form input, form textarea{width:100%; padding:0.75rem; margin-bottom:1rem; border-radius:5px; border:none;}
+form button{background:#ff4d4d; color:#fff; border:none; padding:0.75rem 1.5rem; cursor:pointer; border-radius:5px; font-size:1rem;}
+.products-list{margin-top:2rem;}
+.product-item{background:#333; padding:1rem; border-radius:5px; margin-bottom:1rem; display:flex; align-items:center;}
+.product-item img{height:80px; width:80px; object-fit:cover; margin-right:1rem; border-radius:5px;}
+.product-item div{flex:1;}
+.product-item div p{margin:0.2rem 0;}
+#googleSignIn{margin-left:auto;}
 </style>
 </head>
 <body>
 
 <header>
-<img src="image_2025-09-09_095842205.png" alt="Gamer's Auction Logo">
+<img src="image_2025-09-09_095842205.png" alt="Logo">
 <nav>
-  <a href="index.html">Home</a>
-  <a href="shop.html">Shop</a>
-  <a href="cart.html">Cart</a>
-  <a href="checkout.html">Checkout</a>
+<a href="index.html">Home</a>
+<a href="shop.html">Shop</a>
+<a href="cart.html">Cart</a>
+<a href="checkout.html">Checkout</a>
 </nav>
-<div id="googleSignIn" class="g_id_signin"></div>
+<div id="googleSignIn"></div>
 </header>
 
 <div class="container">
 <h2>Seller Dashboard</h2>
-<div id="signinMessage" class="message">Please sign in with Google to upload products.</div>
-<button id="signOutBtn" class="signout-btn" style="display:none;">Sign Out</button>
 
-<form id="productForm" style="display:none;">
-  <label for="displayName">Display Name</label>
-  <input type="text" id="displayName" required placeholder="Name visible to buyers">
+<div id="signInNotice">
+<p>You must sign in to upload products.</p>
+</div>
 
-  <label for="name">Product Name</label>
-  <input type="text" id="name" required>
+<div id="sellerForm" style="display:none;">
+<form id="uploadForm">
+<label for="displayName">Display Name (shown to buyers)</label>
+<input type="text" id="displayName" required>
 
-  <label for="price">Price</label>
-  <input type="number" id="price" required>
+<label for="title">Product Title</label>
+<input type="text" id="title" required>
 
-  <label for="image">Product Image</label>
-  <input type="file" id="image" accept="image/*" required>
+<label for="price">Price ($)</label>
+<input type="number" id="price" required>
 
-  <button type="submit">Add Product</button>
+<label for="image">Upload Image</label>
+<input type="file" id="image" accept="image/*" required>
+
+<button type="submit">Upload Product</button>
 </form>
+</div>
 
-<h3>Your Products</h3>
-<div class="product-list" id="sellerProducts"></div>
+<div class="products-list" id="productsList"></div>
 </div>
 
 <script>
-// Decode Google JWT
-function decodeJwtResponse(token) {
+// Decode JWT
+function decodeJwtResponse(token){
     const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const base64 = base64Url.replace(/-/g,'+').replace(/_/g,'/');
     return JSON.parse(atob(base64));
 }
 
+// Load current user from localStorage
 let currentUser = JSON.parse(localStorage.getItem("currentUser") || "null");
 
-// Google Sign-In callback
-function handleCredentialResponse(response) {
+// Google Sign-In
+function handleCredentialResponse(response){
     const userObject = decodeJwtResponse(response.credential);
     currentUser = {
-        email: userObject.email,
-        name: userObject.name,
-        picture: userObject.picture
+        email:userObject.email,
+        name:userObject.name,
+        picture:userObject.picture
     };
     localStorage.setItem("currentUser", JSON.stringify(currentUser));
-    showSellerForm();
+    updateSignInState();
 }
 
-// Show upload form and products
-function showSellerForm() {
-    document.getElementById("signinMessage").style.display = "none";
-    document.getElementById("productForm").style.display = "block";
-    document.getElementById("signOutBtn").style.display = "inline-block";
-    loadSellerProducts();
+// Update UI after sign-in
+function updateSignInState(){
+    if(currentUser){
+        document.getElementById("googleSignIn").style.display="none";
+        document.getElementById("signInNotice").style.display="none";
+        document.getElementById("sellerForm").style.display="block";
+        displayProducts();
+    }
 }
 
-// Sign out
-document.getElementById("signOutBtn").addEventListener("click", ()=>{
-    localStorage.removeItem("currentUser");
-    currentUser = null;
-    document.getElementById("productForm").style.display = "none";
-    document.getElementById("signinMessage").style.display = "block";
-    document.getElementById("signOutBtn").style.display = "none";
+// Upload product
+document.getElementById("uploadForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    const displayName = document.getElementById("displayName").value;
+    const title = document.getElementById("title").value;
+    const price = document.getElementById("price").value;
+    const imageFile = document.getElementById("image").files[0];
+
+    if(!imageFile) return;
+
+    const reader = new FileReader();
+    reader.onload = function(){
+        const product = {
+            sellerEmail: currentUser.email,
+            displayName,
+            title,
+            price,
+            image: reader.result
+        };
+        let allProducts = JSON.parse(localStorage.getItem("products") || "[]");
+        allProducts.push(product);
+        localStorage.setItem("products", JSON.stringify(allProducts));
+        alert("Product uploaded!");
+        document.getElementById("uploadForm").reset();
+        displayProducts();
+    };
+    reader.readAsDataURL(imageFile);
 });
 
-// On page load
-window.onload = function() {
-    if(currentUser){
-        showSellerForm();
-    }
+// Display seller's products
+function displayProducts(){
+    const allProducts = JSON.parse(localStorage.getItem("products") || "[]");
+    const sellerProducts = allProducts.filter(p=>p.sellerEmail === currentUser.email);
+    const container = document.getElementById("productsList");
+    container.innerHTML = "";
+    if(sellerProducts.length===0) container.innerHTML="<p>No products uploaded yet.</p>";
+    sellerProducts.forEach(p=>{
+        const div = document.createElement("div");
+        div.className="product-item";
+        div.innerHTML = `<img src="${p.image}" alt="${p.title}">
+                         <div><p><strong>${p.title}</strong></p>
+                         <p>Price: $${p.price}</p>
+                         <p>By: ${p.displayName}</p></div>`;
+        container.appendChild(div);
+    });
+}
+
+// Initialize Google Sign-In
+window.onload = function(){
+    if(currentUser) updateSignInState();
     google.accounts.id.initialize({
         client_id: "189925870813-9ipif2qvi3vkv4f7lsh4p0e4kg644t64.apps.googleusercontent.com",
         callback: handleCredentialResponse
     });
-    google.accounts.id.renderButton(
-        document.getElementById("googleSignIn"),
-        { theme:"outline", size:"large" }
-    );
-};
-
-// Handle product upload
-const form = document.getElementById("productForm");
-const sellerProductsDiv = document.getElementById("sellerProducts");
-
-form.addEventListener("submit", function(e){
-    e.preventDefault();
-    if(!currentUser) return alert("Sign in first");
-
-    const displayName = document.getElementById("displayName").value;
-    const name = document.getElementById("name").value;
-    const price = document.getElementById("price").value;
-    const file = document.getElementById("image").files[0];
-
-    const reader = new FileReader();
-    reader.onload = function(){
-        const imageData = reader.result;
-        const products = JSON.parse(localStorage.getItem("products")||"[]");
-
-        products.push({
-            id: Date.now(),
-            name, price, image: imageData,
-            seller: displayName,
-            sellerId: currentUser.email,
-            sold: false
-        });
-
-        localStorage.setItem("products", JSON.stringify(products));
-        form.reset();
-        loadSellerProducts();
-    };
-    reader.readAsDataURL(file);
-});
-
-// Load seller's products only
-function loadSellerProducts(){
-    const products = JSON.parse(localStorage.getItem("products")||"[]");
-    const myProducts = products.filter(p => p.sellerId === currentUser.email);
-
-    sellerProductsDiv.innerHTML = "";
-    if(myProducts.length === 0){
-        sellerProductsDiv.innerHTML = "<p>You have not uploaded any products yet.</p>";
-        return;
-    }
-
-    myProducts.forEach(p=>{
-        const div = document.createElement("div");
-        div.className = "product-card";
-        div.innerHTML = `
-            <img src="${p.image}" alt="${p.name}">
-            <h4>${p.name}</h4>
-            <p>₹${p.price}</p>
-            <div>Status: ${p.sold ? "Sold" : "Available"}</div>
-        `;
-        sellerProductsDiv.appendChild(div);
-    });
+    google.accounts.id.renderButton(document.getElementById("googleSignIn"), {theme:"outline", size:"large"});
 }
 </script>
 
