@@ -9,8 +9,22 @@
       margin: 0;
       font-family: Arial, sans-serif;
       line-height: 1.6;
-      background: #fff;
+      background: #fff5f5;
       color: #111;
+      scroll-behavior: smooth;
+    }
+
+    /* Animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1s ease forwards;
+    }
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* Navbar */
@@ -21,6 +35,9 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
     header img {
       height: 55px;
@@ -33,29 +50,28 @@
       transition: color 0.3s;
     }
     nav a:hover {
-      color: #ff6600;
+      color: #ff4d4d;
     }
 
     /* Hero */
     .hero {
       text-align: center;
       padding: 5rem 1rem;
-      background: #f4f4f4;
+      background: linear-gradient(to bottom right, #ff4d4d, #990000);
+      color: #fff;
     }
     .hero p.makers {
       font-size: 0.95rem;
-      color: #666;
+      color: #ffe5e5;
       margin-bottom: 0.5rem;
     }
     .hero h2 {
-      font-size: 2.2rem;
+      font-size: 2.5rem;
       margin-bottom: 1rem;
-      color: #000;
     }
     .hero p {
       margin-bottom: 1.5rem;
       font-size: 1.1rem;
-      color: #333;
     }
     .hero a {
       background: #000;
@@ -64,10 +80,29 @@
       text-decoration: none;
       font-size: 1.1rem;
       border-radius: 5px;
-      transition: background 0.3s;
+      transition: background 0.3s, transform 0.3s;
     }
     .hero a:hover {
-      background: #ff6600;
+      background: #ff0000;
+      transform: scale(1.05);
+    }
+
+    /* Why Choose Us */
+    .why {
+      padding: 4rem 2rem;
+      background: #ffeded;
+      text-align: center;
+    }
+    .why h3 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: #cc0000;
+    }
+    .why p {
+      max-width: 700px;
+      margin: auto;
+      font-size: 1.1rem;
+      color: #333;
     }
 
     /* CTA Section */
@@ -79,30 +114,36 @@
     }
     .cta h3 {
       margin-bottom: 1rem;
-      font-size: 1.6rem;
+      font-size: 1.8rem;
     }
     .cta a {
-      background: #ff6600;
+      background: #ff4d4d;
       color: #fff;
       padding: 0.75rem 1.5rem;
       text-decoration: none;
       font-size: 1rem;
       border-radius: 5px;
-      transition: background 0.3s;
+      transition: background 0.3s, transform 0.3s;
     }
     .cta a:hover {
-      background: #e65c00;
+      background: #e60000;
+      transform: scale(1.05);
     }
 
     /* Footer */
     footer {
       text-align: center;
-      padding: 1rem;
+      padding: 2rem 1rem;
       background: #000;
       color: #fff;
     }
+    footer img {
+      height: 40px;
+      display: block;
+      margin: 0 auto 0.5rem;
+    }
     footer a {
-      color: #ff6600;
+      color: #ff4d4d;
       text-decoration: none;
       font-weight: bold;
     }
@@ -125,23 +166,34 @@
   </header>
 
   <!-- Hero Section -->
-  <section class="hero">
+  <section class="hero fade-in">
     <p class="makers">From the makers of Gamerstech</p>
     <h2>Welcome to Gamer's Auction</h2>
-    <p>Buy the best gaming gear at unbeatable prices and get it delivered to your home!!</p>
+    <p>Bid, Buy, and Win the best gaming gear at unbeatable prices.</p>
     <a href="shop.html">Go to Shop</a>
   </section>
 
+  <!-- Why Choose Us -->
+  <section class="why fade-in">
+    <h3>Why Choose Gamer's Auction?</h3>
+    <p>
+      We bring you top-quality gaming products at prices you’ll love. 
+      Backed by Gamerstech, our platform ensures trust, value, and excitement with every purchase.
+    </p>
+  </section>
+
   <!-- Call To Action -->
-  <section class="cta">
+  <section class="cta fade-in">
     <h3>Ready to start?</h3>
     <a href="shop.html">Explore Auctions</a>
   </section>
 
   <!-- Footer -->
   <footer>
+    <img src="image_2025-09-09_095842205.png" alt="Gamer's Auction Logo">
     <p>&copy; 2025 Gamer's Auction. All Rights Reserved. | Visit <a href="https://gamerstech.vercel.app" target="_blank">Gamerstech</a></p>
   </footer>
 
 </body>
 </html>
+
