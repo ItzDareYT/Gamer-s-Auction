@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seller Dashboard - Gamer's Auction</title>
+
+  <!-- Google Sign-In -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      color: #111;
+    }
+
+    /* Navbar */
+    header {
+      background: #131921;
+      padding: 0.75rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    header img {
+      height: 65px;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #ff9900;
+    }
+    .g_id_signin {
+      margin-left: 1rem;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #ff9900;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Form */
+    form label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    form input {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    form button {
+      margin-top: 1.5rem;
+      background: #ff9900;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: transform 0.3s, background 0.3s;
+    }
+    form button:hover {
+      transform: scale(1.05);
+      background: #e68a00;
+    }
+
+    /* Product List */
+    .product-list {
+      margin-top: 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .product-card {
+      background: #f1f1f1;
+      padding: 1rem;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .product-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 5px;
+      margin-bottom: 0.5rem;
+    }
+    .product-card h4 {
+      margin: 0.5rem 0;
+      color: #131921;
+    }
+    .product-card p {
+      margin: 0;
+      font-weight: bold;
+      color: #b12704;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header>
+    <img src="image_2025-09-09_095842205.png" alt="Gamer's Auction Logo">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="cart.html">Cart</a>
+      <a href="checkout.html">Checkout</a>
+    </nav>
+    <div class="g_id_signin"></div>
+  </header>
+
+  <!-- Seller Dashboard -->
+  <div class="container">
+    <h2>Upload a Product</h2>
+    <form id="productForm">
+      <label for="name">Product Name</label>
+      <input type="text" id="name" required placeholder="Enter product name">
+
+      <label for="price">Price (₹)</label>
+      <input type="number" id="price" required placeholder="Enter price">
+
+      <label for="image">Image URL</label>
+      <input type="text" id="image" required placeholder="Paste image URL">
+
+      <button type="submit">Add Product</button>
+    </form>
+
+    <div class="product-list" id="productList">
+      <!-- Products will appear here -->
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer style="text-align:center; padding:2rem; background:#131921; color:#fff; margin-top:2rem;">
+    <img src="image_2025-09-09_095842205.png" alt="Gamer's Auction Logo" style="height:40px; display:block; margin:0 auto 0.5rem;">
+    <p>&copy; 2025 Gamer's Auction. All Rights Reserved.</p>
+    <p>
+      Visit <a href="https://gamerstech.vercel.app" target="_blank" style="color:#ff9900;">Gamerstech</a> |
+      Watch on <a href="https://www.youtube.com/@ItzDareYT" target="_blank" style="color:#ff9900;">YouTube</a>
+    </p>
+  </footer>
+
+  <script>
+    // Google Sign-In
+    function handleCredentialResponse(response) {
+      console.log("JWT ID token: " + response.credential);
+    }
+    window.onload = function () {
+      google.accounts.id.initialize({
+        client_id: "189925870813-9ipif2qvi3vkv4f7lsh4p0e4kg644t64.apps.googleusercontent.com",
+        callback: handleCredentialResponse
+      });
+      google.accounts.id.renderButton(
+        document.querySelector(".g_id_signin"),
+        { theme: "outline", size: "large" }
+      );
+
+      loadProducts();
+    };
+
+    // Product handling
+    const form = document.getElementById("productForm");
+    const productList = document.getElementById("productList");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const price = document.getElementById("price").value;
+      const image = document.getElementById("image").value;
+
+      const products = JSON.parse(localStorage.getItem("products") || "[]");
+      products.push({ name, price, image });
+      localStorage.setItem("products", JSON.stringify(products));
+
+      form.reset();
+      loadProducts();
+      alert("Product added successfully!");
+    });
+
+    function loadProducts() {
+      const products = JSON.parse(localStorage.getItem("products") || "[]");
+      productList.innerHTML = "";
+      if (products.length === 0) {
+        productList.innerHTML = "<p>No products added yet.</p>";
+        return;
+      }
+      products.forEach(product => {
+        const div = document.createElement("div");
+        div.className = "product-card";
+        div.innerHTML = `
+          <img src="${product.image}" alt="${product.name}">
+          <h4>${product.name}</h4>
+          <p>₹${product.price}</p>
+        `;
+        productList.appendChild(div);
+      });
+    }
+  </script>
+
+</body>
+</html>
