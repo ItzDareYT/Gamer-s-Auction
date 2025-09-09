@@ -9,36 +9,32 @@
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <style>
-body {margin:0; font-family:Arial,sans-serif; line-height:1.6; color:#fff; scroll-behavior:smooth; background:#000;}
+body {margin:0; font-family:Arial,sans-serif; scroll-behavior:smooth; color:#fff;}
+.video-bg {position:fixed; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:-1;}
 header {background: rgba(0,0,0,0.8); padding:0.75rem 2rem; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:1000;}
 header img {height:70px;}
 nav a {color:#fff; text-decoration:none; margin-left:1.5rem; font-weight:bold; transition:0.3s;}
 nav a:hover {color:#ff4d4d;}
-.g_id_signin {margin-left:1rem;}
-.hero{text-align:center; padding:8rem 1rem;}
-.hero p.makers{font-size:0.95rem; color:#ffe5e5; margin-bottom:0.5rem;}
-.hero h2{font-size:2.5rem; margin-bottom:1rem; text-shadow:2px 2px 5px #000;}
-.hero p{margin-bottom:1.5rem; font-size:1.1rem; text-shadow:2px 2px 5px #000;}
-.hero a{background:#ff4d4d; color:#fff; padding:0.75rem 1.5rem; text-decoration:none; font-size:1.1rem; border-radius:5px; transition:background 0.3s, transform 0.3s;}
-.hero a:hover{background:#e60000; transform:scale(1.05);}
-.why{padding:4rem 2rem; text-align:center; background: rgba(0,0,0,0.7); margin:2rem; border-radius:10px;}
-.why h3{font-size:2rem; margin-bottom:1.5rem; color:#ff4d4d;}
-.cta{text-align:center; padding:3rem 1rem; background: rgba(0,0,0,0.8); margin:2rem; border-radius:10px;}
-.cta h3{margin-bottom:1rem; font-size:1.8rem;}
-.cta a{background:#ff4d4d; color:#fff; padding:0.75rem 1.5rem; text-decoration:none; font-size:1rem; border-radius:5px; transition:background 0.3s, transform 0.3s;}
-.cta a:hover{background:#e60000; transform:scale(1.05);}
-footer{text-align:center; padding:2rem 1rem; background: rgba(0,0,0,0.9); color:#fff;}
-footer img{height:40px; display:block; margin:0 auto 0.5rem;}
-footer a{color:#ff4d4d; text-decoration:none; font-weight:bold; margin:0 0.5rem;}
-footer a:hover{text-decoration:underline;}
-.role-switch{margin-top:1rem;}
-.role-switch button{padding:0.5rem 1rem; margin:0 0.5rem; border:none; color:white; cursor:pointer; border-radius:5px; font-weight:bold;}
-.role-seller{background:red;} .role-buyer{background:blue;}
+#googleSignIn{margin-left:auto;}
+.hero {text-align:center; padding:8rem 1rem;}
+.hero h2 {font-size:2.5rem; text-shadow:2px 2px 5px #000;}
+.hero p {font-size:1.1rem; text-shadow:2px 2px 5px #000;}
+.hero a {background:#ff4d4d; color:#fff; padding:0.75rem 1.5rem; text-decoration:none; border-radius:5px;}
+.hero a:hover {background:#e60000;}
+.footer-section {background:rgba(0,0,0,0.85); padding:2rem; text-align:center; border-top:2px solid #ff4d4d;}
+.footer-section button {padding:0.5rem 1rem; border:none; border-radius:5px; margin:0 0.5rem; color:#fff; cursor:pointer; font-weight:bold;}
+#buyerBtn{background:#007bff;}
+#sellerBtn{background:#ff0000;}
 </style>
 </head>
 <body>
 
-<!-- Navbar -->
+<!-- Background Video -->
+<video autoplay loop muted playsinline class="video-bg">
+  <source src="gaming-background.mp4" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video>
+
 <header>
 <img src="image_2025-09-09_095842205.png" alt="Logo">
 <nav>
@@ -47,87 +43,70 @@ footer a:hover{text-decoration:underline;}
 <a href="cart.html">Cart</a>
 <a href="checkout.html">Checkout</a>
 </nav>
-<div id="googleSignIn" class="g_id_signin"></div>
+<div id="googleSignIn"></div>
 </header>
 
-<!-- Hero -->
 <section class="hero">
-<p class="makers">From the makers of Gamerstech</p>
 <h2>Welcome to Gamer's Auction</h2>
 <p>Bid, Buy, and Win the best gaming gear at unbeatable prices.</p>
 <a href="shop.html">Go to Shop</a>
-<div class="role-switch">
-<button class="role-seller" onclick="goSeller()">Sell Products</button>
-<button class="role-buyer" onclick="goBuyer()">Buy Products</button>
+</section>
+
+<div class="footer-section">
+<p>Choose Mode:</p>
+<button id="buyerBtn">Buy</button>
+<button id="sellerBtn">Sell</button>
 </div>
-</section>
 
-<!-- Why Choose Us -->
-<section class="why">
-<h3>Why Choose Gamer's Auction?</h3>
-<p>We bring you top-quality gaming products at prices you’ll love. Backed by Gamerstech, our platform ensures trust, value, and excitement with every purchase.</p>
-</section>
-
-<!-- CTA -->
-<section class="cta">
-<h3>Ready to start?</h3>
-<a href="shop.html">Explore Auctions</a>
-</section>
-
-<!-- Footer -->
 <footer>
-<img src="image_2025-09-09_095842205.png" alt="Logo">
 <p>&copy; 2025 Gamer's Auction. All Rights Reserved.</p>
-<p>Visit <a href="https://gamerstech.vercel.app" target="_blank">Gamerstech</a> | Watch on <a href="https://www.youtube.com/@ItzDareYT" target="_blank">YouTube</a></p>
+<p>
+Visit <a href="https://gamerstech.vercel.app" target="_blank">Gamerstech</a> |
+Watch on <a href="https://www.youtube.com/@ItzDareYT" target="_blank">YouTube</a>
+</p>
 </footer>
 
 <script>
-// Decode JWT
-function decodeJwtResponse(token){
-const base64Url = token.split('.')[1];
-const base64 = base64Url.replace(/-/g,'+').replace(/_/g,'/');
-return JSON.parse(atob(base64));
-}
+// Global user
+let currentUser = JSON.parse(localStorage.getItem("currentUser") || "null");
+let signedInBefore = localStorage.getItem("signedInBefore");
 
-let currentUser = JSON.parse(localStorage.getItem("currentUser")||"null");
-
-// Google Sign-In callback
+// Google Sign-In
 function handleCredentialResponse(response){
-    const userObject = decodeJwtResponse(response.credential);
-    currentUser = {
-        email:userObject.email,
-        name:userObject.name,
-        picture:userObject.picture
-    };
+    const payload = JSON.parse(atob(response.credential.split(".")[1]));
+    currentUser = {email:payload.email, name:payload.name, picture:payload.picture};
     localStorage.setItem("currentUser", JSON.stringify(currentUser));
-    updateSignInState();
+    localStorage.setItem("signedInBefore","true");
+    alert("Signed in as: "+payload.name);
 }
 
-// Hide sign-in if already logged in
-function updateSignInState(){
-    if(currentUser){
-        document.querySelector(".g_id_signin").style.display="none";
-    }
-}
-
-// Role buttons
-function goSeller(){
-    if(!currentUser){ alert("Sign in first"); return; }
-    window.location.href="seller.html";
-}
-function goBuyer(){
-    if(!currentUser){ alert("Sign in first"); return; }
-    window.location.href="shop.html";
-}
-
-// On load
+// Initialize Google Sign-In
 window.onload = function(){
-    if(currentUser) updateSignInState();
     google.accounts.id.initialize({
         client_id: "189925870813-9ipif2qvi3vkv4f7lsh4p0e4kg644t64.apps.googleusercontent.com",
         callback: handleCredentialResponse
     });
-    google.accounts.id.renderButton(document.getElementById("googleSignIn"), {theme:"outline", size:"large"});
+    google.accounts.id.renderButton(
+        document.getElementById("googleSignIn"),
+        {theme:"outline", size:"large"}
+    );
+
+    // If signed in before, hide sign in prompt
+    if(signedInBefore && currentUser){
+        document.getElementById("googleSignIn").style.display="none";
+    }
+}
+
+// Footer buttons
+document.getElementById("buyerBtn").onclick=function(){
+    window.location.href="shop.html";
+}
+document.getElementById("sellerBtn").onclick=function(){
+    if(!currentUser){
+        alert("Please sign in first to sell.");
+        return;
+    }
+    window.location.href="seller.html";
 }
 </script>
 
