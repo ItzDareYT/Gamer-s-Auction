@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop - Gamer's Auction</title>
+
+  <!-- Google Sign-In -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      color: #111;
+    }
+
+    /* Navbar */
+    header {
+      background: #131921;
+      padding: 0.75rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    header img {
+      height: 65px;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #ff9900;
+    }
+    .g_id_signin {
+      margin-left: 1rem;
+    }
+
+    /* Search Bar */
+    .search-bar {
+      display: flex;
+      justify-content: center;
+      margin: 1.5rem 0;
+    }
+    .search-bar input {
+      width: 60%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 5px 0 0 5px;
+      font-size: 1rem;
+    }
+    .search-bar button {
+      padding: 0.75rem 1rem;
+      border: none;
+      background: #ff9900;
+      color: #fff;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .search-bar button:hover {
+      background: #e68a00;
+    }
+
+    /* Products Grid */
+    .products-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem;
+      padding: 0 1rem;
+    }
+
+    .product-card {
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+    }
+    .product-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    .product-info {
+      padding: 0.75rem 1rem;
+      flex: 1;
+    }
+    .product-info h4 {
+      margin: 0.5rem 0;
+      color: #131921;
+      font-size: 1.05rem;
+    }
+    .product-info p {
+      margin: 0.25rem 0;
+      font-weight: bold;
+      color: #b12704;
+    }
+    .product-card button {
+      background: #f0c14b;
+      border: 1px solid #a88734;
+      border-radius: 5px;
+      margin: 0.75rem 1rem;
+      padding: 0.5rem;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .product-card button:hover {
+      background: #ddb347;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: #131921;
+      color: #fff;
+      margin-top: 2rem;
+    }
+    footer img {
+      height: 40px;
+      display: block;
+      margin: 0 auto 0.5rem;
+    }
+    footer a {
+      color: #ff9900;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 0 0.5rem;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header>
+    <img src="image_2025-09-09_095842205.png" alt="Gamer's Auction Logo">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="cart.html">Cart</a>
+      <a href="checkout.html">Checkout</a>
+    </nav>
+    <div class="g_id_signin"></div>
+  </header>
+
+  <!-- Search Bar -->
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search for products...">
+    <button onclick="searchProducts()">Search</button>
+  </div>
+
+  <!-- Products Grid -->
+  <div class="products-container" id="productsContainer">
+    <!-- Products from seller.html will appear here -->
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <img src="image_2025-09-09_095842205.png" alt="Gamer's Auction Logo">
+    <p>&copy; 2025 Gamer's Auction. All Rights Reserved.</p>
+    <p>
+      Visit <a href="https://gamerstech.vercel.app" target="_blank">Gamerstech</a> |
+      Watch on <a href="https://www.youtube.com/@ItzDareYT" target="_blank">YouTube</a>
+    </p>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Google Sign-In
+    function handleCredentialResponse(response) {
+      console.log("JWT ID token: " + response.credential);
+    }
+    window.onload = function () {
+      google.accounts.id.initialize({
+        client_id: "189925870813-9ipif2qvi3vkv4f7lsh4p0e4kg644t64.apps.googleusercontent.com",
+        callback: handleCredentialResponse
+      });
+      google.accounts.id.renderButton(
+        document.querySelector(".g_id_signin"),
+        { theme: "outline", size: "large" }
+      );
+
+      loadProducts();
+    };
+
+    // Load products from localStorage
+    function loadProducts() {
+      const container = document.getElementById("productsContainer");
+      const products = JSON.parse(localStorage.getItem("products") || "[]");
+      container.innerHTML = "";
+
+      if (products.length === 0) {
+        container.innerHTML = "<p style='text-align:center; color:#555;'>No products available yet.</p>";
+        return;
+      }
+
+      products.forEach((product, index) => {
+        const card = document.createElement("div");
+        card.className = "product-card";
+        card.innerHTML = `
+          <img src="${product.image}" alt="${product.name}">
+          <div class="product-info">
+            <h4>${product.name}</h4>
+            <p>₹${product.price}</p>
+          </div>
+          <button onclick="addToCart(${index})">Add to Cart</button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function addToCart(index) {
+      const products = JSON.parse(localStorage.getItem("products") || "[]");
+      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      cart.push(products[index]);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert("Added to cart!");
+    }
+
+    // Search Functionality
+    function searchProducts() {
+      const query = document.getElementById("searchInput").value.toLowerCase();
+      const products = JSON.parse(localStorage.getItem("products") || "[]");
+      const filtered = products.filter(p => p.name.toLowerCase().includes(query));
+      const container = document.getElementById("productsContainer");
+      container.innerHTML = "";
+      if (filtered.length === 0) {
+        container.innerHTML = "<p style='text-align:center; color:#555;'>No products found.</p>";
+        return;
+      }
+      filtered.forEach((product, index) => {
+        const card = document.createElement("div");
+        card.className = "product-card";
+        card.innerHTML = `
+          <img src="${product.image}" alt="${product.name}">
+          <div class="product-info">
+            <h4>${product.name}</h4>
+            <p>₹${product.price}</p>
+          </div>
+          <button onclick="addToCart(${index})">Add to Cart</button>
+        `;
+        container.appendChild(card);
+      });
+    }
+  </script>
+
+</body>
+</html>
