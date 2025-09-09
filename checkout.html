@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checkout - Gamer's Auction</title>
+
+  <!-- Google Sign-In -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
   <style>
     body {
       margin: 0;
@@ -32,6 +36,10 @@
     }
     nav a:hover {
       color: #ff4d4d;
+    }
+
+    .g_id_signin {
+      margin-left: 1rem;
     }
 
     /* Checkout Section */
@@ -140,6 +148,9 @@
       <a href="cart.html">Cart</a>
       <a href="checkout.html">Checkout</a>
     </nav>
+
+    <!-- Google Sign-In Button -->
+    <div class="g_id_signin"></div>
   </header>
 
   <!-- Checkout Section -->
@@ -184,6 +195,25 @@
       Watch on <a href="https://www.youtube.com/@ItzDareYT" target="_blank">YouTube</a>
     </p>
   </footer>
+
+  <!-- Google Sign-In Initialization -->
+  <script>
+    function handleCredentialResponse(response) {
+      console.log("JWT ID token: " + response.credential);
+      // You can decode it to get user info and store it
+    }
+
+    window.onload = function () {
+      google.accounts.id.initialize({
+        client_id: "189925870813-9ipif2qvi3vkv4f7lsh4p0e4kg644t64.apps.googleusercontent.com", // <-- Your Client ID
+        callback: handleCredentialResponse
+      });
+      google.accounts.id.renderButton(
+        document.querySelector(".g_id_signin"),
+        { theme: "outline", size: "large" }
+      );
+    };
+  </script>
 
 </body>
 </html>
