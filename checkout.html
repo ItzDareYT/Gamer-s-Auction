@@ -1,219 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout - Gamer's Auction</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout - Gamer's Auction</title>
 
-  <!-- Google Sign-In -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+<!-- Razorpay Checkout -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<!-- Google Sign-In -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #fff5f5;
-      color: #111;
-    }
-
-    /* Navbar */
-    header {
-      background: #000;
-      padding: 0.75rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    header img {
-      height: 65px;
-    }
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      margin-left: 1.5rem;
-      font-weight: bold;
-      transition: color 0.3s;
-    }
-    nav a:hover {
-      color: #ff4d4d;
-    }
-
-    .g_id_signin {
-      margin-left: 1rem;
-    }
-
-    /* Checkout Section */
-    .checkout-container {
-      max-width: 900px;
-      margin: 3rem auto;
-      padding: 2rem;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    .checkout-container h2 {
-      text-align: center;
-      margin-bottom: 2rem;
-      color: #cc0000;
-    }
-
-    .checkout-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 2rem;
-    }
-
-    /* Form */
-    form label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: bold;
-    }
-    form input, form select, form textarea {
-      width: 100%;
-      padding: 0.75rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
-
-    /* Order Summary */
-    .summary {
-      background: #fff5f5;
-      padding: 1.5rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    .summary h3 {
-      margin-bottom: 1rem;
-      color: #cc0000;
-    }
-    .summary p.empty {
-      color: #666;
-      font-style: italic;
-    }
-
-    /* Button */
-    .pay-btn {
-      background: #ff4d4d;
-      color: #fff;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 5px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.3s;
-      width: 100%;
-      margin-top: 1rem;
-    }
-    .pay-btn:hover {
-      background: #e60000;
-      transform: scale(1.03);
-    }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 2rem 1rem;
-      background: #000;
-      color: #fff;
-      margin-top: 3rem;
-    }
-    footer img {
-      height: 40px;
-      display: block;
-      margin: 0 auto 0.5rem;
-    }
-    footer a {
-      color: #ff4d4d;
-      text-decoration: none;
-      font-weight: bold;
-      margin: 0 0.5rem;
-    }
-    footer a:hover {
-      text-decoration: underline;
-    }
-  </style>
+<style>
+body {margin:0; font-family:Arial,sans-serif; background:#fff5f5; color:#111;}
+header {background: rgba(0,0,0,0.85); padding:0.75rem 2rem; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:1000;}
+header img {height:70px;}
+nav a {color:#fff; text-decoration:none; margin-left:1.5rem; font-weight:bold; transition:0.3s;}
+nav a:hover {color:#ff4d4d;}
+#googleSignIn{margin-left:auto;}
+.checkout-container{max-width:900px; margin:3rem auto; padding:2rem; background:#fff; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.1);}
+.checkout-container h2{text-align:center; margin-bottom:2rem; color:#cc0000;}
+.checkout-item{display:flex; justify-content:space-between; padding:1rem 0; border-bottom:1px solid #ccc;}
+.checkout-item p{margin:0;}
+.pay-btn{background:#ff4d4d; color:#fff; border:none; padding:0.75rem 1.5rem; border-radius:5px; font-size:1rem; cursor:pointer; transition:0.3s; width:100%; margin-top:1rem;}
+.pay-btn:hover{background:#e60000;}
+footer{text-align:center; padding:2rem 1rem; background:#000; color:#fff; margin-top:3rem;}
+footer a{color:#ff4d4d; text-decoration:none; font-weight:bold; margin:0 0.5rem;}
+footer a:hover{text-decoration:underline;}
+</style>
 </head>
 <body>
 
-  <!-- Navbar -->
-  <header>
-    <img src="image_2025-09-09_095842205.png" alt="Gamer's Auction Logo">
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="shop.html">Shop</a>
-      <a href="cart.html">Cart</a>
-      <a href="checkout.html">Checkout</a>
-    </nav>
+<header>
+<img src="image_2025-09-09_095842205.png" alt="Logo">
+<nav>
+<a href="index.html">Home</a>
+<a href="shop.html">Shop</a>
+<a href="cart.html">Cart</a>
+<a href="checkout.html">Checkout</a>
+</nav>
+<div id="googleSignIn"></div>
+</header>
 
-    <!-- Google Sign-In Button -->
-    <div class="g_id_signin"></div>
-  </header>
+<div class="checkout-container">
+<h2>Checkout</h2>
+<div id="cartItemsContainer"></div>
+<label for="payment">Payment Method</label>
+<select id="payment">
+<option value="razorpay">Razorpay (UPI/Cards/Wallet)</option>
+<option value="cod">Cash on Delivery</option>
+</select>
+<button class="pay-btn" id="payBtn">Pay Now</button>
+</div>
 
-  <!-- Checkout Section -->
-  <div class="checkout-container">
-    <h2>Checkout</h2>
-    <div class="checkout-grid">
+<footer>
+<p>&copy; 2025 Gamer's Auction. All Rights Reserved.</p>
+<p>
+Visit <a href="https://gamerstech.vercel.app" target="_blank">Gamerstech</a> |
+Watch on <a href="https://www.youtube.com/@ItzDareYT" target="_blank">YouTube</a>
+</p>
+</footer>
 
-      <!-- Form -->
-      <form>
-        <label for="name">Full Name</label>
-        <input type="text" id="name" required>
+<script>
+// Decode JWT
+function decodeJwtResponse(token){
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g,'+').replace(/_/g,'/');
+    return JSON.parse(atob(base64));
+}
 
-        <label for="email">Email</label>
-        <input type="email" id="email" required>
+// Load user and cart
+let currentUser = JSON.parse(localStorage.getItem("currentUser") || "null");
+let cart = JSON.parse(localStorage.getItem("checkoutItems") || "[]");
 
-        <label for="address">Address</label>
-        <textarea id="address" rows="3" required></textarea>
+// Google Sign-In
+function handleCredentialResponse(response){
+    const userObject = decodeJwtResponse(response.credential);
+    currentUser = {email:userObject.email, name:userObject.name, picture:userObject.picture};
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+}
 
-        <label for="payment">Payment Method</label>
-        <select id="payment" required>
-          <option value="">Select a payment method</option>
-          <option value="razorpay">Razorpay (UPI, Cards, Wallets)</option>
-          <option value="cod">Cash on Delivery</option>
-        </select>
-      </form>
+// Initialize Google Sign-In
+window.onload=function(){
+    google.accounts.id.initialize({
+        client_id: "189925870813-9ipif2qvi3vkv4f7lsh4p0e4kg644t64.apps.googleusercontent.com",
+        callback: handleCredentialResponse
+    });
+    google.accounts.id.renderButton(document.getElementById("googleSignIn"), {theme:"outline", size:"large"});
+    renderCartItems();
+}
 
-      <!-- Order Summary -->
-      <div class="summary">
-        <h3>Order Summary</h3>
-        <p class="empty">Your cart is empty</p>
-        <button class="pay-btn">Proceed to Payment</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <footer>
-    <img src="image_2025-09-09_095842205.png" alt="Gamer's Auction Logo">
-    <p>&copy; 2025 Gamer's Auction. All Rights Reserved.</p>
-    <p>
-      Visit <a href="https://gamerstech.vercel.app" target="_blank">Gamerstech</a> |
-      Watch on <a href="https://www.youtube.com/@ItzDareYT" target="_blank">YouTube</a>
-    </p>
-  </footer>
-
-  <!-- Google Sign-In Initialization -->
-  <script>
-    function handleCredentialResponse(response) {
-      console.log("JWT ID token: " + response.credential);
-      // You can decode it to get user info and store it
+// Render Cart Items
+function renderCartItems(){
+    if(!currentUser){
+        alert("Sign in to proceed with checkout.");
+        window.location.href="index.html";
+        return;
     }
 
-    window.onload = function () {
-      google.accounts.id.initialize({
-        client_id: "189925870813-9ipif2qvi3vkv4f7lsh4p0e4kg644t64.apps.googleusercontent.com", // <-- Your Client ID
-        callback: handleCredentialResponse
-      });
-      google.accounts.id.renderButton(
-        document.querySelector(".g_id_signin"),
-        { theme: "outline", size: "large" }
-      );
-    };
-  </script>
+    const container = document.getElementById("cartItemsContainer");
+    if(cart.length===0){
+        container.innerHTML="<p>Your cart is empty.</p>";
+        document.getElementById("payBtn").style.display="none";
+        return;
+    }
+    container.innerHTML="";
+    cart.forEach(item=>{
+        const div = document.createElement("div");
+        div.className="checkout-item";
+        div.innerHTML=`<p>${item.title} - $${item.price}</p><p>Seller: ${item.displayName}</p>`;
+        container.appendChild(div);
+    });
+}
+
+// Pay Button
+document.getElementById("payBtn").addEventListener("click",()=>{
+    const paymentMethod = document.getElementById("payment").value;
+    if(paymentMethod==="cod"){
+        completePurchase("COD");
+    }else{
+        const total = cart.reduce((sum,item)=>sum+Number(item.price),0)*100; // in paise
+        const options = {
+            "key":"YOUR_RAZORPAY_KEY", // <-- replace with your Razorpay key
+            "amount": total,
+            "currency":"INR",
+            "name":"Gamer's Auction",
+            "description":"Purchase Items",
+            "handler": function (response){
+                completePurchase("Razorpay");
+            }
+        };
+        const rzp1 = new Razorpay(options);
+        rzp1.open();
+    }
+});
+
+// Complete purchase
+function completePurchase(method){
+    // Notify sellers
+    const allProducts = JSON.parse(localStorage.getItem("products") || "[]");
+    cart.forEach(item=>{
+        const sellerNotifications = JSON.parse(localStorage.getItem("sellerNotifications")||"{}");
+        if(!sellerNotifications[item.sellerEmail]) sellerNotifications[item.sellerEmail]=[];
+        sellerNotifications[item.sellerEmail].push({
+            productTitle:item.title,
+            buyer:currentUser.name,
+            method:method
+        });
+        localStorage.setItem("sellerNotifications", JSON.stringify(sellerNotifications));
+    });
+    alert("Purchase successful! Payment method: " + method);
+    // Clear cart
+    localStorage.removeItem("cart");
+    localStorage.removeItem("checkoutItems");
+    window.location.href="shop.html";
+}
+</script>
 
 </body>
 </html>
