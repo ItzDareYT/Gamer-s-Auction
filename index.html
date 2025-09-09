@@ -50,7 +50,7 @@
       z-index: 1000;
     }
     header img {
-      height: 70px; /* logo slightly bigger */
+      height: 70px;
     }
     nav a {
       color: #fff;
@@ -158,6 +158,57 @@
     footer a:hover {
       text-decoration: underline;
     }
+
+    /* Role & Google Modal */
+    #roleGoogleModal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 2000; display: none;
+    }
+    #roleGoogleModal .modal-content {
+      background: #111;
+      padding: 2rem;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 450px;
+      color: #fff;
+    }
+    #roleGoogleModal .modal-content h2 {
+      margin-bottom: 1rem;
+    }
+    #roleGoogleModal .modal-content p {
+      margin-bottom: 1.5rem;
+    }
+    #roleGoogleModal .modal-content a, #roleGoogleModal .modal-content button {
+      display: inline-block;
+      margin: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      font-size: 1rem;
+    }
+    #roleGoogleModal .seller {
+      background: #ff4d4d;
+      color: #fff;
+    }
+    #roleGoogleModal .buyer {
+      background: #1e90ff;
+      color: #fff;
+    }
+    #roleGoogleModal .google {
+      background: #db4437;
+      color: #fff;
+    }
+    #roleGoogleModal .later {
+      background: #666;
+      color: #fff;
+    }
   </style>
 </head>
 <body>
@@ -170,7 +221,7 @@
 
   <!-- Navbar -->
   <header>
-    <img src="logo.png" alt="Gamer's Auction Logo">
+    <img src="image_2025-09-09_095842205.png" alt="Gamer's Auction Logo">
     <nav>
       <a href="index.html">Home</a>
       <a href="shop.html">Shop</a>
@@ -212,5 +263,30 @@
     </p>
   </footer>
 
+  <!-- Role & Google Modal -->
+  <div id="roleGoogleModal">
+    <div class="modal-content">
+      <h2>Choose Your Role</h2>
+      <p>Are you a Seller or Buyer?</p>
+      <div>
+        <a href="seller.html" class="seller">Seller</a>
+        <a href="shop.html" class="buyer">Buyer</a>
+      </div>
+      <p style="margin-top:1.5rem;">Sign in or Sign up with Google</p>
+      <div>
+        <a href="#" class="google" onclick="alert('Google Sign In integration here')">Sign in / Sign up with Google</a>
+        <a href="index.html" class="later">Sign up Later</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Show modal on page load
+    window.addEventListener('load', () => {
+      document.getElementById('roleGoogleModal').style.display = 'flex';
+    });
+  </script>
+
 </body>
 </html>
+
