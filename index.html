@@ -106,18 +106,17 @@
     <h2>Choose Your Role</h2>
     <p>Are you a Seller or Buyer?</p>
     <div>
-      <a href="seller.html" class="seller">Seller</a>
-      <a href="shop.html" class="buyer">Buyer</a>
+      <a href="#" class="seller">Seller</a>
+      <a href="#" class="buyer">Buyer</a>
     </div>
     <p style="margin-top:1rem;">Sign in or Sign up with Google</p>
     <div>
-      <!-- Google Sign-In button -->
       <div id="g_id_onload"
            data-client_id="YOUR_CLIENT_ID_HERE"
            data-auto_prompt="false">
       </div>
       <div class="g_id_signin google"></div>
-      <a href="index.html" class="later">Sign up Later</a>
+      <a href="#" class="later">Sign up Later</a>
     </div>
   </div>
 </div>
@@ -126,12 +125,44 @@
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <script>
-  // Show modal on page load
+  const modal = document.getElementById('roleGoogleModal');
+
+  // Show modal only if user hasn't chosen yet
   window.addEventListener('load', () => {
-    document.getElementById('roleGoogleModal').style.display = 'flex';
+    if (!localStorage.getItem('roleChosen')) {
+      modal.style.display = 'flex';
+    }
+  });
+
+  // Sign up Later button
+  const laterButton = modal.querySelector('.later');
+  laterButton.addEventListener('click', () => {
+    localStorage.setItem('roleChosen', 'later');
+    modal.style.display = 'none';
+  });
+
+  // Google Sign-In button (placeholder)
+  const googleButton = modal.querySelector('.g_id_signin');
+  googleButton.addEventListener('click', () => {
+    localStorage.setItem('roleChosen', 'google');
+    modal.style.display = 'none';
+    alert('Google Sign-In clicked! Integrate OAuth here.');
+  });
+
+  // Seller button
+  const sellerButton = modal.querySelector('.seller');
+  sellerButton.addEventListener('click', () => {
+    localStorage.setItem('roleChosen', 'seller');
+    window.location.href = 'seller.html';
+  });
+
+  // Buyer button
+  const buyerButton = modal.querySelector('.buyer');
+  buyerButton.addEventListener('click', () => {
+    localStorage.setItem('roleChosen', 'buyer');
+    window.location.href = 'shop.html';
   });
 </script>
 
 </body>
 </html>
-
