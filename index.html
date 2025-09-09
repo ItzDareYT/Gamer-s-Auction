@@ -9,9 +9,20 @@
       margin: 0;
       font-family: Arial, sans-serif;
       line-height: 1.6;
-      background: #fff5f5;
-      color: #111;
+      color: #fff;
       scroll-behavior: smooth;
+      background: #000;
+    }
+
+    /* Video Background */
+    .video-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
     }
 
     /* Animations */
@@ -29,8 +40,7 @@
 
     /* Navbar */
     header {
-      background: #000;
-      color: #fff;
+      background: rgba(0, 0, 0, 0.8);
       padding: 0.75rem 2rem;
       display: flex;
       justify-content: space-between;
@@ -40,7 +50,7 @@
       z-index: 1000;
     }
     header img {
-      height: 55px;
+      height: 70px; /* logo slightly bigger */
     }
     nav a {
       color: #fff;
@@ -53,12 +63,10 @@
       color: #ff4d4d;
     }
 
-    /* Hero */
+    /* Hero Section */
     .hero {
       text-align: center;
-      padding: 5rem 1rem;
-      background: linear-gradient(to bottom right, #ff4d4d, #990000);
-      color: #fff;
+      padding: 8rem 1rem;
     }
     .hero p.makers {
       font-size: 0.95rem;
@@ -68,13 +76,15 @@
     .hero h2 {
       font-size: 2.5rem;
       margin-bottom: 1rem;
+      text-shadow: 2px 2px 5px #000;
     }
     .hero p {
       margin-bottom: 1.5rem;
       font-size: 1.1rem;
+      text-shadow: 2px 2px 5px #000;
     }
     .hero a {
-      background: #000;
+      background: #ff4d4d;
       color: #fff;
       padding: 0.75rem 1.5rem;
       text-decoration: none;
@@ -83,34 +93,31 @@
       transition: background 0.3s, transform 0.3s;
     }
     .hero a:hover {
-      background: #ff0000;
+      background: #e60000;
       transform: scale(1.05);
     }
 
     /* Why Choose Us */
     .why {
       padding: 4rem 2rem;
-      background: #ffeded;
       text-align: center;
+      background: rgba(0, 0, 0, 0.7);
+      margin: 2rem;
+      border-radius: 10px;
     }
     .why h3 {
       font-size: 2rem;
       margin-bottom: 1.5rem;
-      color: #cc0000;
-    }
-    .why p {
-      max-width: 700px;
-      margin: auto;
-      font-size: 1.1rem;
-      color: #333;
+      color: #ff4d4d;
     }
 
     /* CTA Section */
     .cta {
       text-align: center;
       padding: 3rem 1rem;
-      background: #000;
-      color: #fff;
+      background: rgba(0, 0, 0, 0.8);
+      margin: 2rem;
+      border-radius: 10px;
     }
     .cta h3 {
       margin-bottom: 1rem;
@@ -134,7 +141,7 @@
     footer {
       text-align: center;
       padding: 2rem 1rem;
-      background: #000;
+      background: rgba(0, 0, 0, 0.9);
       color: #fff;
     }
     footer img {
@@ -146,6 +153,7 @@
       color: #ff4d4d;
       text-decoration: none;
       font-weight: bold;
+      margin: 0 0.5rem;
     }
     footer a:hover {
       text-decoration: underline;
@@ -154,9 +162,15 @@
 </head>
 <body>
 
+  <!-- Background Video -->
+  <video autoplay loop muted playsinline class="video-bg">
+    <source src="gaming-background.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+  </video>
+
   <!-- Navbar -->
   <header>
-    <img src="logo.png" alt="Gamer's Auction Logo">
+    <img src="image_2025-09-09_095842205.png" alt="Gamer's Auction Logo">
     <nav>
       <a href="index.html">Home</a>
       <a href="shop.html">Shop</a>
@@ -165,7 +179,7 @@
     </nav>
   </header>
 
-  <!-- Hero Section -->
+  <!-- Hero -->
   <section class="hero fade-in">
     <p class="makers">From the makers of Gamerstech</p>
     <h2>Welcome to Gamer's Auction</h2>
@@ -191,9 +205,12 @@
   <!-- Footer -->
   <footer>
     <img src="image_2025-09-09_095842205.png" alt="Gamer's Auction Logo">
-    <p>&copy; 2025 Gamer's Auction. All Rights Reserved. | Visit <a href="https://gamerstech.vercel.app" target="_blank">Gamerstech</a></p>
+    <p>&copy; 2025 Gamer's Auction. All Rights Reserved.</p>
+    <p>
+      Visit <a href="https://gamerstech.vercel.app" target="_blank">Gamerstech</a> |
+      Watch on <a href="https://www.youtube.com/@ItzDareYT" target="_blank">YouTube</a>
+    </p>
   </footer>
 
 </body>
 </html>
-
