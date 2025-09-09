@@ -75,9 +75,11 @@ let currentUser = JSON.parse(localStorage.getItem("currentUser") || "null");
 
 // Google Sign-In callback
 function handleCredentialResponse(response) {
-  // Decode JWT token to get user info
-  // For simplicity, simulate
-  currentUser = { email: "seller@example.com", name: "Seller Name" }; 
+  // Replace this with real JWT decoding if needed
+  const email = "seller@example.com"; // for demo, normally decode JWT
+  const name = "Seller Name";
+
+  currentUser = { email, name };
   localStorage.setItem("currentUser", JSON.stringify(currentUser));
   document.getElementById("signinMessage").style.display = "none";
   document.getElementById("productForm").style.display = "block";
@@ -103,7 +105,7 @@ window.onload = function(){
   }
 
   google.accounts.id.initialize({
-    client_id: "YOUR_CLIENT_ID",
+    client_id: "189925870813-9ipif2qvi3vkv4f7lsh4p0e4kg644t64.apps.googleusercontent.com",
     callback: handleCredentialResponse
   });
   google.accounts.id.renderButton(
