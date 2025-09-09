@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cart - Gamer's Auction</title>
+
+<!-- Google Sign-In -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+<style>
+body {margin:0; font-family:Arial,sans-serif; background:#111; color:#fff;}
+header {background: rgba(0,0,0,0.85); padding:0.75rem 2rem; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:1000;}
+header img {height:70px;}
+nav a {color:#fff; text-decoration:none; margin-left:1.5rem; font-weight:bold; transition:0.3s;}
+nav a:hover {color:#ff4d4d;}
+#googleSignIn{margin-left:auto;}
+.container{max-width:900px; margin:2rem auto; background:#222; padding:2rem; border-radius:10px;}
+h2{text-align:center; color:#ff4d4d; margin-bottom:1.5rem;}
+.cart-item{display:flex; align-items:center; margin-bottom:1rem; background:#333; padding:1rem; border-radius:5px;}
+.cart-item img{width:80px; height:80px; object-fit:cover; margin-right:1rem; border-radius:5px;}
+.cart-item div{flex:1;}
+.cart-item div p{margin:0.2rem 0;}
+button{background:#ff4d4d; border:none; color:#fff; padding:0.5rem 1rem; border-radius:5px; cursor:pointer;}
+button:hover{background:#e60000;}
+#emptyNotice{text-align:center; margin-top:2rem; color:#ff4d4d;}
+#checkoutBtn{margin-top:1rem; width:100%;}
+</style>
+</head>
+<body>
+
+<header>
+<img src="image_2025-09-09_095842205.png" alt="Logo">
+<nav>
+<a href="index.html">Home</a>
+<a href="shop.html">Shop</a>
+<a href="cart.html">Cart</a>
+<a href="checkout.html">Checkout</a>
+</nav>
+<div id="googleSignIn"></div>
+</header>
+
+<div class="container">
+<h2>Your Cart</h2>
+<div id="emptyNotice"></div>
+<div id="cartContainer"></div>
+<button id="checkoutBtn">Proceed to Checkout</button>
+</div>
+
+<script>
+// Decode JWT
+function decodeJwtResponse(token){
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g,'+').replace(/_/g,'/');
+    return JSON.parse(atob(base64));
+}
+
+// Load user and cart
+let currentUser = JSON.parse(localStorage.getItem("currentUser") || "null");
+let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+// Google Sign-In callback
+function handleCredentialResponse(response){
+    const userObject = decodeJwtResponse(response.credential);
+    currentUser = {email:userObject.email, name:userObject.name, picture:userObject.picture};
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    renderCart();
+}
+
+// Render cart
+function renderCart(){
+    const container = document.getElementById("cartContainer");
+    const emptyNotice = document.getElementById("emptyNotice");
+
+    if(!currentUser){
+        emptyNotice.textContent="Sign in to view your cart.";
+        container.innerHTML="";
+        document.getElementById("checkoutBtn").style.display="none";
+        return;
+    }
+
+    if(cart.length===0){
+        emptyNotice.textContent="Your cart is empty.";
+        container.innerHTML="";
+        document.getElementById("checkoutBtn").style.display="none";
+        return;
+    }
+
+    emptyNotice.textContent="";
+    document.getElementById("checkoutBtn").style.display="block";
+    container.innerHTML="";
+
+    cart.forEach((item,index)=>{
+        const div=document.createElement("div");
+        div.className="cart-item";
+        div.innerHTML=`<img src="${item.image}" alt="${item.title}">
+                       <div>
+                       <p><strong>${item.title}</strong></p>
+                       <p>Price: $${item.price}</p>
+                       <p>Seller: ${item.displayName}</p>
+                       </div>
+                       <button onclick="removeItem(${index})">Remove</button>`;
+        container.appendChild(div);
+    });
+}
+
+// Remove item from cart
+function removeItem(index){
+    cart.splice(index,1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+}
+
+// Checkout button
+document.getElementById("checkoutBtn").addEventListener("click",()=>{
+    if(cart.length===0) return;
+    localStorage.setItem("checkoutItems", JSON.stringify(cart));
+    window.location.href="checkout.html";
+});
+
+// Initialize Google Sign-In
+window.onload = function(){
+    google.accounts.id.initialize({
+        client_id: "189925870813-9ipif2qvi3vkv4f7lsh4p0e4kg644t64.apps.googleusercontent.com",
+        callback: handleCredentialResponse
+    });
+    google.accounts.id.renderButton(document.getElementById("googleSignIn"), {theme:"outline", size:"large"});
+    
+    if(currentUser) renderCart();
+}
+</script>
+
+</body>
+</html>
