@@ -11,6 +11,8 @@
   header img {height:70px;}
   nav a {color:#fff; text-decoration:none; margin-left:1.5rem; font-weight:bold; transition:color 0.3s;}
   nav a:hover {color:#ff4d4d;}
+  /* Google Sign-In button in header */
+  #header-google-signin {margin-left: 1.5rem;}
   .hero {text-align:center; padding:8rem 1rem;}
   .hero p.makers {font-size:0.95rem; color:#ffe5e5; margin-bottom:0.5rem;}
   .hero h2 {font-size:2.5rem; margin-bottom:1rem; text-shadow:2px 2px 5px #000;}
@@ -58,13 +60,17 @@
 
 <!-- Navbar -->
 <header>
-  <img src="image_2025-09-09_095842205.png" alt="Gamer's Auction Logo">
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="shop.html">Shop</a>
-    <a href="cart.html">Cart</a>
-    <a href="checkout.html">Checkout</a>
-  </nav>
+  <div style="display:flex; align-items:center;">
+    <img src="image_2025-09-09_095842205.png" alt="Gamer's Auction Logo">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="cart.html">Cart</a>
+      <a href="checkout.html">Checkout</a>
+    </nav>
+  </div>
+  <!-- Google Sign-In button top-right -->
+  <div id="header-google-signin" class="g_id_signin"></div>
 </header>
 
 <!-- Hero -->
@@ -125,43 +131,43 @@
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <script>
-  const modal = document.getElementById('roleGoogleModal');
+const modal = document.getElementById('roleGoogleModal');
 
-  // Show modal only if user hasn't chosen yet
-  window.addEventListener('load', () => {
-    if (!localStorage.getItem('roleChosen')) {
-      modal.style.display = 'flex';
-    }
-  });
+// Show modal only if user hasn't chosen yet
+window.addEventListener('load', () => {
+  if (!localStorage.getItem('roleChosen')) {
+    modal.style.display = 'flex';
+  }
+});
 
-  // Sign up Later button
-  const laterButton = modal.querySelector('.later');
-  laterButton.addEventListener('click', () => {
-    localStorage.setItem('roleChosen', 'later');
-    modal.style.display = 'none';
-  });
+// Sign up Later button
+const laterButton = modal.querySelector('.later');
+laterButton.addEventListener('click', () => {
+  localStorage.setItem('roleChosen', 'later');
+  modal.style.display = 'none';
+});
 
-  // Google Sign-In button (placeholder)
-  const googleButton = modal.querySelector('.g_id_signin');
-  googleButton.addEventListener('click', () => {
-    localStorage.setItem('roleChosen', 'google');
-    modal.style.display = 'none';
-    alert('Google Sign-In clicked! Integrate OAuth here.');
-  });
+// Google Sign-In button (modal)
+const googleButton = modal.querySelector('.g_id_signin');
+googleButton.addEventListener('click', () => {
+  localStorage.setItem('roleChosen', 'google');
+  modal.style.display = 'none';
+  alert('Google Sign-In clicked! Integrate OAuth here.');
+});
 
-  // Seller button
-  const sellerButton = modal.querySelector('.seller');
-  sellerButton.addEventListener('click', () => {
-    localStorage.setItem('roleChosen', 'seller');
-    window.location.href = 'seller.html';
-  });
+// Seller button
+const sellerButton = modal.querySelector('.seller');
+sellerButton.addEventListener('click', () => {
+  localStorage.setItem('roleChosen', 'seller');
+  window.location.href = 'seller.html';
+});
 
-  // Buyer button
-  const buyerButton = modal.querySelector('.buyer');
-  buyerButton.addEventListener('click', () => {
-    localStorage.setItem('roleChosen', 'buyer');
-    window.location.href = 'shop.html';
-  });
+// Buyer button
+const buyerButton = modal.querySelector('.buyer');
+buyerButton.addEventListener('click', () => {
+  localStorage.setItem('roleChosen', 'buyer');
+  window.location.href = 'shop.html';
+});
 </script>
 
 </body>
