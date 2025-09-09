@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gamer's Auction</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background: #f9f9f9;
+    }
+    /* Navbar */
+    header {
+      background: #111;
+      color: #fff;
+      padding: 0.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header img {
+      height: 50px;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-weight: bold;
+    }
+    nav a:hover {
+      color: #ff6600;
+    }
+    /* Hero */
+    .hero {
+      background: url("https://picsum.photos/1600/600?random=10") no-repeat center center/cover;
+      color: white;
+      text-align: center;
+      padding: 6rem 1rem;
+    }
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .hero a {
+      background: #ff6600;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      font-size: 1.2rem;
+      border-radius: 5px;
+    }
+    .hero a:hover {
+      background: #e65c00;
+    }
+    /* Featured Products */
+    .products {
+      padding: 2rem;
+      max-width: 1100px;
+      margin: auto;
+    }
+    .products h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .product {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      text-align: center;
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .product img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .product h3 {
+      margin: 0.5rem 0;
+    }
+    .product p {
+      color: #333;
+    }
+    .product button {
+      background: #111;
+      color: #fff;
+      border: none;
+      padding: 0.75rem;
+      width: 100%;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .product button:hover {
+      background: #333;
+    }
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #111;
+      color: #fff;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header>
+    <img src="image_2025-09-09_095842205.png" alt="Gamer's Auction Logo">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="cart.html">Cart</a>
+      <a href="checkout.html">Checkout</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h2>Welcome to Gamer's Auction</h2>
+    <p>Bid, Buy, and Win the best gaming gear</p>
+    <a href="shop.html">Start Bidding</a>
+  </section>
+
+  <!-- Featured Products -->
+  <section class="products">
+    <h2>Featured Auctions</h2>
+    <div class="grid">
+      <div class="product">
+        <img src="https://picsum.photos/400/300?random=20" alt="Product 1">
+        <h3>Gaming Headset</h3>
+        <p>Starting at ₹499</p>
+        <button>Bid Now</button>
+      </div>
+      <div class="product">
+        <img src="https://picsum.photos/400/300?random=21" alt="Product 2">
+        <h3>Mechanical Keyboard</h3>
+        <p>Starting at ₹1,499</p>
+        <button>Bid Now</button>
+      </div>
+      <div class="product">
+        <img src="https://picsum.photos/400/300?random=22" alt="Product 3">
+        <h3>Pro Gaming Mouse</h3>
+        <p>Starting at ₹999</p>
+        <button>Bid Now</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Gamer's Auction. All Rights Reserved.</p>
+  </footer>
+
+</body>
+</html>
