@@ -41,7 +41,7 @@
       z-index: 1000;
     }
     header img {
-      height: 70px; /* logo slightly bigger */
+      height: 70px;
     }
     nav a {
       color: #fff;
@@ -154,6 +154,21 @@
     footer a:hover {
       text-decoration: underline;
     }
+    /* Buy or Sell buttons */
+    .footer-buttons a {
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      text-decoration: none;
+      color: #fff;
+      margin: 0 0.5rem;
+      font-weight: bold;
+    }
+    .footer-buttons .seller {
+      background: red;
+    }
+    .footer-buttons .buyer {
+      background: blue;
+    }
   </style>
 </head>
 <body>
@@ -172,7 +187,6 @@
       <a href="cart.html">Cart</a>
       <a href="checkout.html">Checkout</a>
     </nav>
-
     <!-- Google Sign-In Button -->
     <div class="g_id_signin"></div>
   </header>
@@ -205,6 +219,13 @@
       Visit <a href="https://gamerstech.vercel.app" target="_blank">Gamerstech</a> |
       Watch on <a href="https://www.youtube.com/@ItzDareYT" target="_blank">YouTube</a>
     </p>
+
+    <!-- Buy or Sell Option -->
+    <div class="footer-buttons">
+      <span>Want to switch?</span>
+      <a href="seller.html" class="seller">Seller</a>
+      <a href="shop.html" class="buyer">Buyer</a>
+    </div>
   </footer>
 
   <!-- Google Sign-In Initialization -->
@@ -216,7 +237,7 @@
 
     window.onload = function () {
       google.accounts.id.initialize({
-        client_id: "189925870813-9ipif2qvi3vkv4f7lsh4p0e4kg644t64.apps.googleusercontent.com", // <-- PUT YOUR CLIENT ID HERE
+        client_id: "189925870813-9ipif2qvi3vkv4f7lsh4p0e4kg644t64.apps.googleusercontent.com", // <-- Your Client ID
         callback: handleCredentialResponse
       });
       google.accounts.id.renderButton(
