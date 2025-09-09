@@ -1,66 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gamer's Auction</title>
-<style>
-  body {margin:0; font-family:Arial,sans-serif; line-height:1.6; color:#fff; scroll-behavior:smooth; background:#000;}
-  .video-bg {position:fixed; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:-1;}
-  header {background:rgba(0,0,0,0.8); padding:0.75rem 2rem; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:1000;}
-  header img {height:70px;}
-  nav a {color:#fff; text-decoration:none; margin-left:1.5rem; font-weight:bold; transition:color 0.3s;}
-  nav a:hover {color:#ff4d4d;}
-  /* Google Sign-In button in header */
-  #header-google-signin {margin-left: 1.5rem;}
-  .hero {text-align:center; padding:8rem 1rem;}
-  .hero p.makers {font-size:0.95rem; color:#ffe5e5; margin-bottom:0.5rem;}
-  .hero h2 {font-size:2.5rem; margin-bottom:1rem; text-shadow:2px 2px 5px #000;}
-  .hero p {margin-bottom:1.5rem; font-size:1.1rem; text-shadow:2px 2px 5px #000;}
-  .hero a {background:#ff4d4d; color:#fff; padding:0.75rem 1.5rem; text-decoration:none; font-size:1.1rem; border-radius:5px; transition:background 0.3s, transform 0.3s;}
-  .hero a:hover {background:#e60000; transform:scale(1.05);}
-  .why {padding:4rem 2rem; text-align:center; background:rgba(0,0,0,0.7); margin:2rem; border-radius:10px;}
-  .why h3 {font-size:2rem; margin-bottom:1.5rem; color:#ff4d4d;}
-  .cta {text-align:center; padding:3rem 1rem; background:rgba(0,0,0,0.8); margin:2rem; border-radius:10px;}
-  .cta h3 {margin-bottom:1rem; font-size:1.8rem;}
-  .cta a {background:#ff4d4d; color:#fff; padding:0.75rem 1.5rem; text-decoration:none; font-size:1rem; border-radius:5px; transition:background 0.3s, transform 0.3s;}
-  .cta a:hover {background:#e60000; transform:scale(1.05);}
-  footer {text-align:center; padding:2rem 1rem; background:rgba(0,0,0,0.9); color:#fff;}
-  footer img {height:40px; display:block; margin:0 auto 0.5rem;}
-  footer a {color:#ff4d4d; text-decoration:none; font-weight:bold; margin:0 0.5rem;}
-  footer a:hover {text-decoration:underline;}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gamer's Auction</title>
 
-  /* Modal */
-  #roleGoogleModal {
-    position:fixed; top:0; left:0; width:100%; height:100%;
-    background: rgba(0,0,0,0.85); display:flex; justify-content:center; align-items:center;
-    z-index:2000; display:none;
-  }
-  #roleGoogleModal .modal-content {
-    background:#111; padding:2rem; border-radius:10px; text-align:center; max-width:450px; color:#fff;
-  }
-  #roleGoogleModal .modal-content h2 {margin-bottom:1rem;}
-  #roleGoogleModal .modal-content p {margin-bottom:1rem;}
-  #roleGoogleModal .modal-content a, #roleGoogleModal .modal-content button {
-    display:inline-block; margin:0.5rem; padding:0.75rem 1.5rem; border-radius:5px; font-weight:bold; cursor:pointer; text-decoration:none; border:none; font-size:1rem;
-  }
-  #roleGoogleModal .seller {background:#ff4d4d; color:#fff;}
-  #roleGoogleModal .buyer {background:#1e90ff; color:#fff;}
-  #roleGoogleModal .google {background:#db4437; color:#fff;}
-  #roleGoogleModal .later {background:#666; color:#fff;}
-</style>
+  <!-- Google Sign-In -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #fff;
+      scroll-behavior: smooth;
+      background: #000;
+    }
+
+    /* Video Background */
+    .video-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    /* Navbar */
+    header {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 0.75rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    header img {
+      height: 70px; /* logo slightly bigger */
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #ff4d4d;
+    }
+
+    /* Google Sign-In button in navbar */
+    .g_id_signin {
+      margin-left: 1rem;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 8rem 1rem;
+    }
+    .hero p.makers {
+      font-size: 0.95rem;
+      color: #ffe5e5;
+      margin-bottom: 0.5rem;
+    }
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 5px #000;
+    }
+    .hero p {
+      margin-bottom: 1.5rem;
+      font-size: 1.1rem;
+      text-shadow: 2px 2px 5px #000;
+    }
+    .hero a {
+      background: #ff4d4d;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      font-size: 1.1rem;
+      border-radius: 5px;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .hero a:hover {
+      background: #e60000;
+      transform: scale(1.05);
+    }
+
+    /* Why Choose Us */
+    .why {
+      padding: 4rem 2rem;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.7);
+      margin: 2rem;
+      border-radius: 10px;
+    }
+    .why h3 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: #ff4d4d;
+    }
+
+    /* CTA Section */
+    .cta {
+      text-align: center;
+      padding: 3rem 1rem;
+      background: rgba(0, 0, 0, 0.8);
+      margin: 2rem;
+      border-radius: 10px;
+    }
+    .cta h3 {
+      margin-bottom: 1rem;
+      font-size: 1.8rem;
+    }
+    .cta a {
+      background: #ff4d4d;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      font-size: 1rem;
+      border-radius: 5px;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .cta a:hover {
+      background: #e60000;
+      transform: scale(1.05);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: rgba(0, 0, 0, 0.9);
+      color: #fff;
+    }
+    footer img {
+      height: 40px;
+      display: block;
+      margin: 0 auto 0.5rem;
+    }
+    footer a {
+      color: #ff4d4d;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 0 0.5rem;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
 
-<!-- Video Background -->
-<video autoplay loop muted playsinline class="video-bg">
-  <source src="gaming-background.mp4" type="video/mp4">
-  Your browser does not support HTML5 video.
-</video>
+  <!-- Background Video -->
+  <video autoplay loop muted playsinline class="video-bg">
+    <source src="gaming-background.mp4" type="video/mp4">
+  </video>
 
-<!-- Navbar -->
-<header>
-  <div style="display:flex; align-items:center;">
+  <!-- Navbar -->
+  <header>
     <img src="image_2025-09-09_095842205.png" alt="Gamer's Auction Logo">
     <nav>
       <a href="index.html">Home</a>
@@ -68,107 +172,59 @@
       <a href="cart.html">Cart</a>
       <a href="checkout.html">Checkout</a>
     </nav>
-  </div>
-  <!-- Google Sign-In button top-right -->
-  <div id="header-google-signin" class="g_id_signin"></div>
-</header>
 
-<!-- Hero -->
-<section class="hero fade-in">
-  <p class="makers">From the makers of Gamerstech</p>
-  <h2>Welcome to Gamer's Auction</h2>
-  <p>Bid, Buy, and Win the best gaming gear at unbeatable prices.</p>
-  <a href="shop.html">Go to Shop</a>
-</section>
+    <!-- Google Sign-In Button -->
+    <div class="g_id_signin"></div>
+  </header>
 
-<!-- Why Choose Us -->
-<section class="why fade-in">
-  <h3>Why Choose Gamer's Auction?</h3>
-  <p>
-    We bring you top-quality gaming products at prices you’ll love. 
-    Backed by Gamerstech, our platform ensures trust, value, and excitement with every purchase.
-  </p>
-</section>
+  <!-- Hero Section -->
+  <section class="hero">
+    <p class="makers">From the makers of Gamerstech</p>
+    <h2>Welcome to Gamer's Auction</h2>
+    <p>Bid, Buy, and Win the best gaming gear at unbeatable prices.</p>
+    <a href="shop.html">Go to Shop</a>
+  </section>
 
-<!-- CTA -->
-<section class="cta fade-in">
-  <h3>Ready to start?</h3>
-  <a href="shop.html">Explore Auctions</a>
-</section>
+  <!-- Why Choose Us -->
+  <section class="why">
+    <h3>Why Choose Gamer's Auction?</h3>
+    <p>We bring you top-quality gaming products at prices you’ll love. Backed by Gamerstech, our platform ensures trust, value, and excitement with every purchase.</p>
+  </section>
 
-<!-- Footer -->
-<footer>
-  <img src="image_2025-09-09_095842205.png" alt="Gamer's Auction Logo">
-  <p>&copy; 2025 Gamer's Auction. All Rights Reserved.</p>
-  <p>
-    Visit <a href="https://gamerstech.vercel.app" target="_blank">Gamerstech</a> |
-    Watch on <a href="https://www.youtube.com/@ItzDareYT" target="_blank">YouTube</a>
-  </p>
-</footer>
+  <!-- Call To Action -->
+  <section class="cta">
+    <h3>Ready to start?</h3>
+    <a href="shop.html">Explore Auctions</a>
+  </section>
 
-<!-- Role & Google Modal -->
-<div id="roleGoogleModal">
-  <div class="modal-content">
-    <h2>Choose Your Role</h2>
-    <p>Are you a Seller or Buyer?</p>
-    <div>
-      <a href="#" class="seller">Seller</a>
-      <a href="#" class="buyer">Buyer</a>
-    </div>
-    <p style="margin-top:1rem;">Sign in or Sign up with Google</p>
-    <div>
-      <div id="g_id_onload"
-           data-client_id="YOUR_CLIENT_ID_HERE"
-           data-auto_prompt="false">
-      </div>
-      <div class="g_id_signin google"></div>
-      <a href="#" class="later">Sign up Later</a>
-    </div>
-  </div>
-</div>
+  <!-- Footer -->
+  <footer>
+    <img src="image_2025-09-09_095842205.png" alt="Gamer's Auction Logo">
+    <p>&copy; 2025 Gamer's Auction. All Rights Reserved.</p>
+    <p>
+      Visit <a href="https://gamerstech.vercel.app" target="_blank">Gamerstech</a> |
+      Watch on <a href="https://www.youtube.com/@ItzDareYT" target="_blank">YouTube</a>
+    </p>
+  </footer>
 
-<!-- Google Identity Services Script -->
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+  <!-- Google Sign-In Initialization -->
+  <script>
+    function handleCredentialResponse(response) {
+      console.log("JWT ID token: " + response.credential);
+      // You can decode it to get user info and store it
+    }
 
-<script>
-const modal = document.getElementById('roleGoogleModal');
-
-// Show modal only if user hasn't chosen yet
-window.addEventListener('load', () => {
-  if (!localStorage.getItem('roleChosen')) {
-    modal.style.display = 'flex';
-  }
-});
-
-// Sign up Later button
-const laterButton = modal.querySelector('.later');
-laterButton.addEventListener('click', () => {
-  localStorage.setItem('roleChosen', 'later');
-  modal.style.display = 'none';
-});
-
-// Google Sign-In button (modal)
-const googleButton = modal.querySelector('.g_id_signin');
-googleButton.addEventListener('click', () => {
-  localStorage.setItem('roleChosen', 'google');
-  modal.style.display = 'none';
-  alert('Google Sign-In clicked! Integrate OAuth here.');
-});
-
-// Seller button
-const sellerButton = modal.querySelector('.seller');
-sellerButton.addEventListener('click', () => {
-  localStorage.setItem('roleChosen', 'seller');
-  window.location.href = 'seller.html';
-});
-
-// Buyer button
-const buyerButton = modal.querySelector('.buyer');
-buyerButton.addEventListener('click', () => {
-  localStorage.setItem('roleChosen', 'buyer');
-  window.location.href = 'shop.html';
-});
-</script>
+    window.onload = function () {
+      google.accounts.id.initialize({
+        client_id: "189925870813-9ipif2qvi3vkv4f7lsh4p0e4kg644t64.apps.googleusercontent.com", // <-- PUT YOUR CLIENT ID HERE
+        callback: handleCredentialResponse
+      });
+      google.accounts.id.renderButton(
+        document.querySelector(".g_id_signin"),
+        { theme: "outline", size: "large" }
+      );
+    };
+  </script>
 
 </body>
 </html>
